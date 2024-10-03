@@ -1,4 +1,4 @@
-package com.hhplus.architecture;
+package com.hhplus.architecture.unit;
 
 import com.hhplus.architecture.lecture.application.Lecture;
 import com.hhplus.architecture.lecture.infrastructure.LectureEntity;
@@ -11,14 +11,12 @@ import com.hhplus.architecture.registration.infrastructure.RegistrationEntity;
 import com.hhplus.architecture.registration.application.RegistrationRepository;
 import com.hhplus.architecture.user.infrastructure.UserEntity;
 import com.hhplus.architecture.user.application.UserRepository;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.LocalDate;

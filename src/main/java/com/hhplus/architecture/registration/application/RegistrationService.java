@@ -8,6 +8,7 @@ import com.hhplus.architecture.lectureItem.infrastructure.LectureItemEntity;
 import com.hhplus.architecture.registration.infrastructure.RegistrationEntity;
 import com.hhplus.architecture.user.application.UserRepository;
 import com.hhplus.architecture.user.infrastructure.UserEntity;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -29,6 +30,7 @@ public class RegistrationService {
     private RegistrationRepository registrationRepository;
 
     // 수강 신청하기
+    @Transactional
     public void createRegistration(Registration registration) {
         // 0. user, lecture 정보 가져오기
         Long userId = registration.getUserId();
@@ -49,10 +51,21 @@ public class RegistrationService {
             throw new RuntimeException("수강 신청할 수 없는 강의입니다.");
         }
 
+        // 1-3. 수강 신청한 사람이 30명 이상인지 체크
+        LectureItemEntity  lectureItem = lectureItemRepository.findWithPessimisticLock(lecture.getId());
+        int availableCnt = lectureItem.getAvailableCnt();
+        if (availableCnt <= 0) {
+            throw new RuntimeException("수강 신청 가능한 인원이 초과되었습니다.");
+        }
+
         registrationEntity = RegistrationEntity.toEntity(user, lecture);
 
-        // 2. 저장
+        // 2-1. 저장
         registrationRepository.save(registrationEntity);
+
+        // 2-2. available cnt --;
+        LectureItemEntity lectureEntity = new LectureItemEntity(lectureItem.getId(), lectureItem.getAvailableDate(), availableCnt-1,lecture);
+        lectureItemRepository.save(lectureEntity);
     }
 
     // 닐찌별 수강 가능한 특강 목록
