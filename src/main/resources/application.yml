@@ -1,0 +1,19 @@
+spring:
+  application:
+    name=Lecture
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+  sql:
+    init:
+      mode: always
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    defer-datasource-initialization: true
+  datasource:
+    driver-class-name: org.h2.Driver
+    url: jdbc:h2:tcp://localhost/~/test;NON_KEYWORDS=USER
+    username: sa
+    password:
