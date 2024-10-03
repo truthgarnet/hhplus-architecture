@@ -83,7 +83,7 @@ public class RegistrationServiceTest {
         LectureEntity lecture = new LectureEntity(lectureId, "강의 제목", "강사진");
 
         // when
-        when(userRepository.findById(userId)).thenReturn(user);
+        Mockito.lenient().when(userRepository.findById(userId)).thenReturn(user);
         when(lectureRepository.findById(lectureId)).thenReturn(lecture);
         // @TODO: 고쳐야 하는 부분
         Mockito.lenient().when(lectureItemRepository.existsByLectureIdAndAvailbelDate(lectureId, now)).thenReturn(false);
