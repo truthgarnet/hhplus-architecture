@@ -50,4 +50,5 @@ public class LectureItemRepositoryImpl implements LectureItemRepository {
     public void save(LectureItemEntity lectureItem) {
         lectureItemJpaRepository.save(lectureItem);
     }
+
 }

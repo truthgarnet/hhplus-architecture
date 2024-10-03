@@ -19,4 +19,7 @@ public interface RegistrationRepository {
     boolean existsByUserAndLecture(UserEntity user, LectureEntity lecture);
 
     List<RegistrationEntity> findByUser(UserEntity user);
+
+    @Transactional
+    RegistrationEntity findWithPessimisticLock(Long userId, Long lectureId);
 }

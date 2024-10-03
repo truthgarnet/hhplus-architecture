@@ -3,6 +3,10 @@ package com.hhplus.architecture.registration.infrastructure;
 import com.hhplus.architecture.lecture.infrastructure.LectureEntity;
 import com.hhplus.architecture.registration.application.RegistrationRepository;
 import com.hhplus.architecture.user.infrastructure.UserEntity;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.LockModeType;
+import jakarta.persistence.PersistenceContext;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -11,6 +15,8 @@ import java.util.List;
 public class RegistrationRepositoryImpl implements RegistrationRepository {
 
     private final RegistrationJpaRepository registrationJpaRepository;
+    @PersistenceContext
+    private EntityManager entityManager;
 
     public RegistrationRepositoryImpl(RegistrationJpaRepository registrationJpaRepository) {
         this.registrationJpaRepository = registrationJpaRepository;
@@ -39,5 +45,17 @@ public class RegistrationRepositoryImpl implements RegistrationRepository {
     @Override
     public List<RegistrationEntity> findByUser(UserEntity user) {
         return registrationJpaRepository.findByUser(user);
+    }
+
+    @Override
+    @Transactional
+    public RegistrationEntity findWithPessimisticLock(Long userId, Long lectureId) {
+        // 비관적 락을 사용하여 LectureItemEntity를 조회
+        List<RegistrationEntity> results = entityManager.createQuery("SELECT r FROM RegistrationEntity r WHERE r.user.id = :userId AND r.lecture.id = :lectureId", RegistrationEntity.class)
+                .setParameter("userId", userId)
+                .setParameter("lectureId", lectureId)
+                .setLockMode(LockModeType.PESSIMISTIC_WRITE)
+                .getResultList();
+        return results.isEmpty() ? null : results.get(0);
     }
 }
