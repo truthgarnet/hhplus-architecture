@@ -45,30 +45,30 @@ public class RegistrationServiceTest {
     @InjectMocks
     private RegistrationService registrationService;
 
-
-    @Test
-    @DisplayName("수강 신청 성공 테스트")
-    void success_createRegistration() {
-        // given
-        Long userId = 1L;
-        Long lectureId = 2L;
-        Date now = new Date();
-
-        Registration registration = new Registration(userId, lectureId);
-        UserEntity user = new UserEntity(userId);
-        LectureEntity lecture = new LectureEntity(lectureId, "강의 제목", "강사진");
-
-        // when
-        when(userRepository.findById(userId)).thenReturn(user);
-        when(lectureRepository.findById(lectureId)).thenReturn(lecture);
-        // @TODO: 고쳐야 하는 부분
-        doReturn(true).when(lectureItemRepository).existsByLectureIdAndAvailbelDate(eq(lectureId), any(Date.class));
-
-        registrationService.createRegistration(registration);
-
-        // then
-        verify(registrationRepository, times(1)).save(any(RegistrationEntity.class));
-    }
+//    STEP3으로 인해 통합 테스트로 이동
+//    @Test
+//    @DisplayName("수강 신청 성공 테스트")
+//    void success_createRegistration() {
+//        // given
+//        Long userId = 1L;
+//        Long lectureId = 2L;
+//        Date now = new Date();
+//
+//        Registration registration = new Registration(userId, lectureId);
+//        UserEntity user = new UserEntity(userId);
+//        LectureEntity lecture = new LectureEntity(lectureId, "강의 제목", "강사진");
+//
+//        // when
+//        when(userRepository.findById(userId)).thenReturn(user);
+//        when(lectureRepository.findById(lectureId)).thenReturn(lecture);
+//        // @TODO: 고쳐야 하는 부분
+//        doReturn(true).when(lectureItemRepository).existsByLectureIdAndAvailbelDate(eq(lectureId), any(Date.class));
+//
+//        registrationService.createRegistration(registration);
+//
+//        // then
+//        verify(registrationRepository, times(1)).save(any(RegistrationEntity.class));
+//    }
 
     @Test
     @DisplayName("수강 신청 실패 테스트 - 강의 신청 불가능")
