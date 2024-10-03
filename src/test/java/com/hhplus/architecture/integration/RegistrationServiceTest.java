@@ -2,9 +2,6 @@ package com.hhplus.architecture.integration;
 
 import com.hhplus.architecture.registration.application.Registration;
 import com.hhplus.architecture.registration.application.RegistrationService;
-import com.hhplus.architecture.user.infrastructure.UserEntity;
-import jakarta.transaction.Transactional;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
