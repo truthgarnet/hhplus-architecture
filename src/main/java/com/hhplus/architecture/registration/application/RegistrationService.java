@@ -43,7 +43,13 @@ public class RegistrationService {
 
         // 1-1. 존재하는 강의인지 체크
         LectureEntity lecture = lectureRepository.findById(lectureId);
-        
+
+        // 1-2. 같은 강의를 수강 신청한 사람인지 체크
+        RegistrationEntity existingRegistration = registrationRepository.findWithPessimisticLock(userId, lectureId);
+        if (existingRegistration != null) {
+            throw new RuntimeException("이미 수강 신청한 강의입니다.");
+        }
+
         // 1-2. 수강 가능한 강의인지 체크 (날짜 기준)
         Date now = new Date();
         boolean checkAvailable = lectureItemRepository.existsByLectureIdAndAvailbelDate(lecture.getId(), now);
